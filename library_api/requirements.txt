@@ -1,0 +1,21 @@
+# Core Framework
+Django>=5.1,<6.0
+
+# Django REST Framework (for building REST APIs)
+djangorestframework>=3.15.0
+
+# OpenAPI / Swagger schema generation
+drf-spectacular>=0.27.0
+
+# Database adapter (for PostgreSQL — use sqlite3 by default if not configured)
+psycopg2-binary>=2.9.9
+
+# Optional: For managing environment variables
+python-dotenv>=1.0.1
+
+# Optional: For CORS (if your frontend connects to the API)
+django-cors-headers>=4.4.0
+
+# Optional: For testing and development
+pytest>=8.3.0
+pytest-django>=4.8.0
