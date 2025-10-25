@@ -1,8 +1,10 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from books.dao.book_dao import BookDAO
-from books.serializers.book_serializers import BookSerializer
+
+from books.dao.book import BookDAO
+from books.serializer.book_serialiser import BookSerializer
+
 
 class BookListCreateView(APIView):
 

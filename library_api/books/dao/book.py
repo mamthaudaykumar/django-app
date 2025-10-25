@@ -1,5 +1,6 @@
 from books.models.book import Book
-from books.models.borrow_status import BookBorrowStatus
+from books.models.book_borrow import BookBorrowStatus
+
 
 class BookDAO:
 

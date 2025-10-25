@@ -1,7 +1,8 @@
 from django.db import models
 
-from . import UsersDetails
 from .book import Book
+from .user_detail import UsersDetails
+
 
 class UserBookWishlist(models.Model):
     user = models.ForeignKey(UsersDetails, on_delete=models.CASCADE)
