@@ -41,12 +41,9 @@ INSTALLED_APPS = [
     'drf_spectacular',
     'drf_spectacular_sidecar',
     'books',
-
     
-    
-    
-    
-    ]
+    'books_app',
+    'user_app',]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

@@ -217,7 +217,7 @@ class {class_name}(APIView):
     write_file_if_missing(views_file, views_code)
 
     urls_str = "\n".join(["    " + u for u in urls_list])
-    import_header = f"from django.urls import path\nfrom ..views import views_generated_{spec_id}"
+    import_header = f"from django.urls import path\nfrom ..views.views_generated_{spec_id} import *"
     write_urls_append(urls_file, urls_str, import_header)
 
     # -----------------------------
