@@ -40,10 +40,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'drf_spectacular',
     'drf_spectacular_sidecar',
-    'books',
-    
-    'books_app',
-    'user_app',]
+    'book',]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -134,7 +131,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 
 MIGRATION_MODULES = {
-    'books': 'db_migrations',
+    'book': 'db_migrations',
 }
 
 
