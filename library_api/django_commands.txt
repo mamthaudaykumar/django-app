@@ -1,0 +1,89 @@
+Django
+
+
+# -----------------------------
+# 1️⃣ Setup Project & Virtualenv
+# -----------------------------
+mkdir my_django_project
+cd my_django_project
+python -m venv .venv
+source .venv/bin/activate        # Activate virtualenv (macOS/Linux)
+# .venv\Scripts\activate        # Windows
+pip install --upgrade pip setuptools wheel
+pip install -r requirements.txt  # Install all packages (Django, DB adapters, etc.)
+
+# -----------------------------
+# 2️⃣ Create Django Project & App
+# -----------------------------
+django-admin startproject project_name .
+python manage.py startapp app_name
+
+# -----------------------------
+# 3️⃣ Database Setup (MySQL)
+# -----------------------------
+brew install mysql pkg-config openssl   # macOS system dependencies
+brew services start mysql                # Start MySQL server
+mysql -u root -p
+CREATE DATABASE library_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE USER 'library_user'@'localhost' IDENTIFIED BY 'your_password';
+GRANT ALL PRIVILEGES ON library_db.* TO 'library_user'@'localhost';
+FLUSH PRIVILEGES;
+EXIT;
+
+# Configure settings.py
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'library_db',
+#         'USER': 'library_user',
+#         'PASSWORD': 'your_password',
+#         'HOST': '127.0.0.1',
+#         'PORT': '3306',
+#         'OPTIONS': {'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"},
+#     }
+# }
+
+# -----------------------------
+# 4️⃣ Migrations & Database Management
+# -----------------------------
+python manage.py makemigrations
+python manage.py migrate
+python manage.py showmigrations
+python manage.py sqlmigrate app_name 0001_initial
+python manage.py dbshell
+
+# -----------------------------
+# 5️⃣ Superuser / Admin
+# -----------------------------
+python manage.py createsuperuser
+# Access admin panel: http://127.0.0.1:8000/admin
+
+# -----------------------------
+# 6️⃣ Run Development Server
+# -----------------------------
+python manage.py runserver
+python manage.py runserver 8080         # Custom port
+python manage.py runserver 0.0.0.0:8000 # Allow network access
+
+# -----------------------------
+# 7️⃣ Testing
+# -----------------------------
+python manage.py test
+python manage.py test app_name
+
+# -----------------------------
+# 8️⃣ Shell & Utilities
+# -----------------------------
+python manage.py shell
+python -m django --version
+python manage.py check
+python manage.py help
+deactivate                               # Exit virtualenv
+python manage.py collectstatic           # Collect static files for production
+
+# -----------------------------
+# 9️⃣ Optional: Clear Migrations & Reset DB (dev only)
+# -----------------------------
+rm -rf app_name/migrations
+python manage.py makemigrations
+python manage.py migrate

@@ -8,8 +8,8 @@ class BookBorrowStatus(models.Model):
         ('LOST', 'Lost'),
     ]
 
-    user = models.ForeignKey("books.UsersDetails", on_delete=models.CASCADE)
-    book = models.ForeignKey("books.Book", on_delete=models.CASCADE)
+    user = models.ForeignKey("book.UsersDetails", on_delete=models.CASCADE)
+    book = models.ForeignKey("book.Book", on_delete=models.CASCADE)
     borrowed_on = models.DateTimeField(auto_now_add=True)
     due_date = models.DateTimeField(null=True, blank=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES)
