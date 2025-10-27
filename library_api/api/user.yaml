@@ -1,0 +1,113 @@
+openapi: 3.1.0
+info:
+  title: User/Wishlist API for Library App
+  version: "0.1.0"
+tags:
+  - name: User – Wishlist
+
+paths:
+  /user/{user_id}/book/{book_id}/wishlist:
+    post:
+      tags: [User – Wishlist]
+      summary: Add a book to wishlist
+      operationId: add_to_wishlist
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: book_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "201":
+          description: Added to Wishlist
+        "422":
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+    delete:
+      tags: [User – Wishlist]
+      summary: Remove a book from wishlist
+      operationId: remove_from_wishlist
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: book_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Removed from Wishlist
+        "422":
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+
+  /user/{user_id}/wishlist:
+    get:
+      tags: [User – Wishlist]
+      summary: List a user's wishlist
+      operationId: list_wishlist
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/WishlistItemResponse"
+        "422":
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+
+components:
+  schemas:
+    WishlistItemResponse:
+      type: object
+      required: [id, user_id, book_id]
+      properties:
+        id: { type: integer }
+        user_id: { type: integer }
+        book_id: { type: integer }
+
+    HTTPValidationError:
+      type: object
+      properties:
+        detail:
+          type: array
+          items:
+            $ref: "#/components/schemas/ValidationError"
+
+    ValidationError:
+      type: object
+      required: [loc, msg, type]
+      properties:
+        loc:
+          type: array
+          items:
+            anyOf: [{type: string}, {type: integer}]
+        msg: { type: string }
+        type: { type: string }

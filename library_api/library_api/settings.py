@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'drf_spectacular',
     'drf_spectacular_sidecar',
     'books',
-]
+
+    ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -77,10 +78,9 @@ REST_FRAMEWORK = {
 }
 
 SPECTACULAR_SETTINGS = {
-    "TITLE": "Book API",
-    "DESCRIPTION": "Generated from OpenAPI 3.1 spec",
-    "VERSION": "0.1.0",
-    "SERVE_INCLUDE_SCHEMA": False,
+    'TITLE': 'Library API',
+    'DESCRIPTION': 'APIs for Books and User Wishlist',
+    'VERSION': '0.1.0',
 }
 
 # Database

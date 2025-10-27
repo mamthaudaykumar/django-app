@@ -1,0 +1,271 @@
+openapi: 3.1.0
+info:
+  title: Book API for Library App
+  version: "0.1.0"
+tags:
+  - name: Book API's
+
+paths:
+  /book/:
+    get:
+      tags: [Book API's]
+      summary: Get All Books
+      operationId: get_all_books
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/BookResponse"
+    post:
+      tags: [Book API's]
+      summary: Create books
+      operationId: create_books
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BookRequest"
+      responses:
+        "201":
+          description: Book Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BookCreateResponse"
+        "422":
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+
+  /book/{book_id}:
+    get:
+      tags: [Book API's]
+      summary: Get Book
+      operationId: get_book
+      parameters:
+        - name: book_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BookResponse"
+        "422":
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+    put:
+      tags: [Book API's]
+      summary: Update Book
+      operationId: update_book
+      parameters:
+        - name: book_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BookRequest"
+      responses:
+        "200":
+          description: Book Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BookUpdateResponse"
+        "422":
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+
+  /book/bookstatus/update:
+    put:
+      tags: [Book API's]
+      summary: Update book status
+      operationId: update_book_status
+      parameters:
+        - name: book_id
+          in: query
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BookBorrowStatusRequest"
+      responses:
+        "204":
+          description: Status Updated
+        "422":
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+
+  /book/books/search:
+    get:
+      tags: [Book API's]
+      summary: Search books by author and/or title
+      operationId: search_books
+      parameters:
+        - name: author
+          in: query
+          required: false
+          schema:
+            anyOf:
+              - type: string
+              - type: "null"
+        - name: title
+          in: query
+          required: false
+          schema:
+            anyOf:
+              - type: string
+              - type: "null"
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/BookResponse"
+        "422":
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HTTPValidationError"
+
+  /book/report/rented-books:
+    get:
+      tags: [Book API's]
+      summary: Get report of currently rented books
+      operationId: get_rented_books_report
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+
+  /:
+    get:
+      summary: Health
+      operationId: health
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: {}
+
+components:
+  schemas:
+    BookRequest:
+      type: object
+      required: [book_id, isbn, author, publication_year, title, language]
+      properties:
+        book_id: { type: integer }
+        isbn: { type: string }
+        author: { type: string }
+        publication_year: { type: integer, minimum: 0 }
+        title: { type: string }
+        language: { type: string }
+
+    BookResponse:
+      type: object
+      required: [id, book_id, isbn, author, title]
+      properties:
+        id: { type: integer }
+        book_id: { type: integer }
+        isbn: { type: string }
+        author: { type: string }
+        publication_year: { anyOf: [{type: integer}, {type: "null"}] }
+        title: { type: string }
+        language: { anyOf: [{type: string}, {type: "null"}] }
+        status_details: { anyOf: [ { $ref: "#/components/schemas/StatusDetails" }, { type: "null" } ] }
+
+    BookCreateResponse:
+      type: object
+      required: [id, book_id, isbn, author, title]
+      properties:
+        id: { type: integer }
+        book_id: { type: integer }
+        isbn: { type: string }
+        author: { type: string }
+        publication_year: { anyOf: [{type: integer}, {type: "null"}] }
+        title: { type: string }
+        language: { anyOf: [{type: string}, {type: "null"}] }
+
+    BookUpdateResponse:
+      type: object
+      required: [id, book_id, isbn, author, title]
+      properties:
+        id: { type: integer }
+        book_id: { type: integer }
+        isbn: { type: string }
+        author: { type: string }
+        publication_year: { anyOf: [{type: integer}, {type: "null"}] }
+        title: { type: string }
+        language: { anyOf: [{type: string}, {type: "null"}] }
+
+    BookBorrowStatusRequest:
+      type: object
+      required: [user_id, book_id, status]
+      properties:
+        user_id: { type: integer }
+        book_id: { type: integer }
+        status: { type: string, description: "RENTED/RETURNED" }
+
+    StatusDetails:
+      type: object
+      required: [status]
+      properties:
+        status: { type: string }
+        borrowerId: { anyOf: [{type: integer}, {type: "null"}] }
+        borrowerName: { anyOf: [{type: string}, {type: "null"}] }
+        borrowedOn: { anyOf: [{type: string, format: date-time}, {type: "null"}] }
+
+    HTTPValidationError:
+      type: object
+      properties:
+        detail:
+          type: array
+          items:
+            $ref: "#/components/schemas/ValidationError"
+
+    ValidationError:
+      type: object
+      required: [loc, msg, type]
+      properties:
+        loc:
+          type: array
+          items:
+            anyOf: [{type: string}, {type: integer}]
+        msg: { type: string }
+        type: { type: string }
