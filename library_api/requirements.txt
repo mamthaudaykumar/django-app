@@ -24,3 +24,8 @@ pytest>=8.3.0
 pytest-django>=4.8.0
 
 pymongo[srv]>=4.15.3
+djangorestframework
+drf-spectacular
+drf-spectacular-sidecar
+openapi-python-client
+pyyaml

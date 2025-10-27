@@ -1,11 +1,17 @@
-from django.urls import path
-
-from books.view.book_view import BookListCreateView, BookDetailView
-from books.view.wishlist_view import WishlistView
+from django.urls import path, include
+from drf_spectacular.views import (
+    SpectacularAPIView,
+    SpectacularSwaggerView,
+    SpectacularRedocView,
+)
 
 urlpatterns = [
-    path('api/v1/book/', BookListCreateView.as_view(), name='book-list-create'),
-    path('api/v1/book/<int:book_id>/', BookDetailView.as_view(), name='book-detail'),
-    path('api/v1/user/<int:user_id>/wishlist/', WishlistView.as_view(), name='wishlist-list'),
-    path('api/v1/user/<int:user_id>/book/<int:book_id>/wishlist/', WishlistView.as_view(), name='wishlist-add-remove'),
+    # Schema endpoint
+    path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
+    # Swagger UI
+    path("api/schema/swagger-ui/", SpectacularSwaggerView.as_view(url_name="schema"), name="swagger-ui"),
+    # ReDoc UI
+    path("api/schema/redoc/", SpectacularRedocView.as_view(url_name="schema"), name="redoc"),
+    path("api/v1/", include("books.urls_generated")),
+
 ]
